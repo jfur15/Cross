@@ -18,8 +18,12 @@ public class VehicleController : MonoBehaviour
     {
         //gameObject.tag = "enemy";
         initialPosition = transform.position;
+        //speed = Random.Range(1f, 3f);
     }
-
+    public float GetSpeed()
+    {
+        return (speed * dir.x) +(speed * dir.y);
+    }
     public void Set(Vector2 go)
     {
         dir = go;

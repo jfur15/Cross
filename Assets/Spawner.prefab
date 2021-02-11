@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vehicleObject: {fileID: 5072061687308968620, guid: 671e5bb165f2e194298227eb135be15a, type: 3}
-  spawnDuration: 1.5
+  spawnDuration: 4.5
   gap: 0.25
   dir: {x: 1, y: 0}

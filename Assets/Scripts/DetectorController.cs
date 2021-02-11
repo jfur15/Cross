@@ -6,6 +6,8 @@ public class DetectorController : MonoBehaviour
 {
     int counter = 0;
     List<GameObject> pool = new List<GameObject>();
+    int pitCounter = 0;
+
     public bool doesit
     {
         get
@@ -15,7 +17,19 @@ public class DetectorController : MonoBehaviour
                 return true;
             }
             return false;
-        } }
+        }
+    }
+    public bool pit
+    {
+        get
+        {
+            if (pitCounter > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
     //public bool doesit = false;
     // Start is called before the first frame update
     void Start()
@@ -42,8 +56,15 @@ public class DetectorController : MonoBehaviour
         if (other.CompareTag("ground"))
         {
             counter++;
+            pool.Clear();
             //doesit = true;
         }
+        if (other.CompareTag("pit"))
+        {
+            pitCounter++;
+            //doesit = true;
+        }
+
 
         if (other.CompareTag("platform"))
         {
@@ -59,8 +80,15 @@ public class DetectorController : MonoBehaviour
         if (other.CompareTag("ground"))
         {
             counter--;
+            //pool.Clear();
             //doesit = false;
         }
+        if (other.CompareTag("pit"))
+        {
+            pitCounter--;
+            //doesit = true;
+        }
+
         if (other.CompareTag("platform"))
         {
             if (pool.Contains(other.gameObject))

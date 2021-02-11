@@ -31,8 +31,8 @@ public class SegmentController : MonoBehaviour
         gbb.transform.position = transform.position;
         gbb.GetComponent<BoxCollider>().size = new Vector3(1.1f, 1, 1.1f);
         int rightSide = xSize;
-        //Starter(new Vector2(0,5), Vector2.right);
-        //Starter(new Vector2(xSize, 3), Vector2.left);
+        Starter(new Vector2(0,5), Vector2.right);
+        Starter(new Vector2(xSize, 3), Vector2.left);
 
         //gbb.GetComponent<BoxCollider>().bounds.
 

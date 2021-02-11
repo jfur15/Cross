@@ -35,14 +35,20 @@ public class PitController : MonoBehaviour
 
         GameObject spa = Instantiate(spawner);
         Bounds mybds = GetComponent<BoxCollider>().bounds;
+
+        GameObject killme = Instantiate(plat);
+        Bounds boxBds = killme.GetComponent<Renderer>().bounds;
+
         SpawnController spawn = spa.GetComponent<SpawnController>();
         spawn.dir = mydir;
         spawn.vehicleObject = plat;
         float xv = transform.position.x - (mybds.size.x / 2) + (-mydir.x * 1f) + start.x;
-        float yv = -1f;
+        float yv = mybds.center.y + (mybds.size.y / 2) - (boxBds.size.y/2);
         float zv = transform.position.z - (int)(zSize / 2) + .5f + start.y;
         spa.transform.position = new Vector3(xv, yv, zv);
         spa.transform.parent = transform;
+
+        Destroy(killme);
 
     }
     // Update is called once per frame

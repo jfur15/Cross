@@ -8,6 +8,7 @@ TagManager:
   - enemy
   - enemyground
   - platform
+  - pit
   layers:
   - Default
   - TransparentFX
