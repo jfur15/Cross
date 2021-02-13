@@ -18,6 +18,7 @@ public class SpawnController : MonoBehaviour
         segment = transform.parent.gameObject;
 
         segmentBox = segment.GetComponent<BoxCollider>();
+        spawnTimer = spawnDuration;
     }
 
     // Update is called once per frame

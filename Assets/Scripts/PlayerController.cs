@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("ground"))
         {
             snapObject = null;
-
+            platCounter = 0;
         }
         if (other.CompareTag("platform"))
         {
@@ -141,8 +141,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Pit : " + pitCounter);
-        Debug.Log("Plat: " + platCounter);
+        if (platCounter < 0)
+        {
+            platCounter = 0;
+        }
+        Debug.Log("snapPos : " + snapPos);
         if (Input.GetKey(KeyCode.Space))
         {
             kill();
@@ -175,6 +178,12 @@ public class PlayerController : MonoBehaviour
 
         if (lerpTimer <= lerpDuration)
         {
+            if (snapObject!=null)
+            {
+                Vector3 go = snapObject.transform.position + snapPos;
+                go.y = transform.position.y;
+                bVector = go;
+            }
             lerpTimer += Time.deltaTime;
             float x = Mathf.Lerp(aVector.x, bVector.x, lerpTimer / lerpDuration);
             float y = Mathf.Lerp(aVector.y, bVector.y, lerpTimer / lerpDuration);
@@ -189,11 +198,6 @@ public class PlayerController : MonoBehaviour
                 if (!platform)
                 {
                     kill();
-                    if (snapObject==null)
-                    {
-
-                        kill();
-                    }
                 }
             }
             if (platform)
@@ -243,10 +247,15 @@ public class PlayerController : MonoBehaviour
 
         if (dcCube.SnapObject() != null)
         {
+            VehicleController dcve = dcCube.SnapObject().GetComponent<VehicleController>();
             float gap = 0f;
-            if (snapObject != dcCube.SnapObject())
+            if (snapObject == dcCube.SnapObject())
             {
-               // gap = -dcCube.SnapObject().GetComponent<VehicleController>().GetSpeed() * lerpDuration;
+                if (dcve.GetDir() == v*-1)
+                {
+                  //  gap = dcve.GetSpeed() * lerpDuration;
+                }
+               //ap = -dcCube.SnapObject().GetComponent<VehicleController>().GetSpeed() * lerpDuration;
             }
             snapObject = dcCube.SnapObject();
             //snapPos = snapObject.transform.InverseTransformPoint(dcCube.transform.position);
@@ -257,17 +266,17 @@ public class PlayerController : MonoBehaviour
             float xx = Math.Abs(snapObject.transform.position.x - dcCube.transform.position.x) * -Math.Sign(snapObject.transform.position.x - dcCube.transform.position.x);
             float zz = Math.Abs(snapObject.transform.position.z - dcCube.transform.position.z) * -Math.Sign(snapObject.transform.position.z - dcCube.transform.position.z);
             
-            if (Math.Max(snapObject.transform.localScale.x, snapObject.transform.localScale.z) % 2 == 0)
+            if (Math.Max(snapObject.transform.lossyScale.x, snapObject.transform.lossyScale.z) % 2 == 0)
             {
 
                 if (snapObject.transform.localScale.x < snapObject.transform.localScale.z)
                 {
-                    zz = (float)Math.Round(zz)+ gap;
+                    zz = (float)Math.Round(zz) + 0.5f + gap;
                     xx = (float)Math.Round(xx);
                 }
                 else
                 {
-                    xx = (float)Math.Round(xx) + gap;
+                    xx = (float)Math.Round(xx) + 0.5f + gap;
                     zz = (float)Math.Round(zz);
 
                 }
@@ -277,16 +286,23 @@ public class PlayerController : MonoBehaviour
             {
                 if (snapObject.transform.localScale.x < snapObject.transform.localScale.z)
                 {
-                    zz = (float)Math.Floor(zz) + 0.5f + gap;
+                    zz = (float)Math.Round(zz);
                     xx = (float)Math.Round(xx);
                 }
                 else
                 {
-                    xx = (float)Math.Floor(xx) + 0.5f+gap;
+                    xx = (float)Math.Round(xx);
                     zz = (float)Math.Round(zz);
 
                 }
-
+            }
+            if (zz > snapObject.transform.lossyScale.z/2)
+            {
+                zz--;
+            }
+            if (xx > snapObject.transform.lossyScale.x/2)
+            {
+                xx--;
             }
 
             //ADD obstacle SPEED PLUS CHARAC SPEED
