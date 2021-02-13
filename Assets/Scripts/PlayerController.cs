@@ -135,6 +135,7 @@ public class PlayerController : MonoBehaviour
         bVector = initialPosition;
         aVector = initialPosition;
         lerpTimer = 0f;
+
         snapObject = null;
     }
     // Update is called once per frame
@@ -187,11 +188,21 @@ public class PlayerController : MonoBehaviour
             {
                 if (!platform)
                 {
+                    kill();
                     if (snapObject==null)
                     {
 
                         kill();
                     }
+                }
+            }
+            if (platform)
+            {
+
+                if (snapObject == null)
+                {
+
+                    kill();
                 }
             }
             //check if bottom has object!
@@ -232,6 +243,11 @@ public class PlayerController : MonoBehaviour
 
         if (dcCube.SnapObject() != null)
         {
+            float gap = 0f;
+            if (snapObject != dcCube.SnapObject())
+            {
+               // gap = -dcCube.SnapObject().GetComponent<VehicleController>().GetSpeed() * lerpDuration;
+            }
             snapObject = dcCube.SnapObject();
             //snapPos = snapObject.transform.InverseTransformPoint(dcCube.transform.position);
 
@@ -240,7 +256,7 @@ public class PlayerController : MonoBehaviour
 
             float xx = Math.Abs(snapObject.transform.position.x - dcCube.transform.position.x) * -Math.Sign(snapObject.transform.position.x - dcCube.transform.position.x);
             float zz = Math.Abs(snapObject.transform.position.z - dcCube.transform.position.z) * -Math.Sign(snapObject.transform.position.z - dcCube.transform.position.z);
-            float gap = snapObject.GetComponent<VehicleController>().GetSpeed() * lerpDuration;
+            
             if (Math.Max(snapObject.transform.localScale.x, snapObject.transform.localScale.z) % 2 == 0)
             {
 
