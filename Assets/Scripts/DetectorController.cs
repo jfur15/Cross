@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class DetectorController : MonoBehaviour
 {
-    int counter = 0;
+    int groundCounter = 0;
     List<GameObject> pool = new List<GameObject>();
     int pitCounter = 0;
 
-    public bool doesit
+    public bool ground
     {
         get
         {
-            if (counter>0)
+            if (groundCounter > 0)
             {
                 return true;
             }
@@ -30,7 +30,7 @@ public class DetectorController : MonoBehaviour
             return false;
         }
     }
-    //public bool doesit = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +55,7 @@ public class DetectorController : MonoBehaviour
     {
         if (other.CompareTag("ground"))
         {
-            counter++;
+            groundCounter++;
             pool.Clear();
             //doesit = true;
         }
@@ -79,14 +79,11 @@ public class DetectorController : MonoBehaviour
     {
         if (other.CompareTag("ground"))
         {
-            counter--;
-            //pool.Clear();
-            //doesit = false;
+            groundCounter--;
         }
         if (other.CompareTag("pit"))
         {
             pitCounter--;
-            //doesit = true;
         }
 
         if (other.CompareTag("platform"))

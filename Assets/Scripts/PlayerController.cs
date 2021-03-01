@@ -6,26 +6,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int units = 1;
-
+    //Avector is the original, bvector is the vector to lerp to
     Vector3 aVector = new Vector3();
     Vector3 bVector = new Vector3();
 
     float lerpTimer = 0f;
-    public int unitsPerSecond = 5;
     float lerpDuration = 0f;
+
+    public int unitsPerSecond = 5;
+
     int pitCounter = 0;
     int platCounter = 0;
 
-
+    //Debug variable.
     Vector3 initialPosition = new Vector3();
 
+    //Prefab for detecting ground on all four sides
     public GameObject detectorCube;
 
+    //Contains the current platform to snap to
     GameObject snapObject = null;
     Vector3 snapPos = new Vector3(0,0,0);
 
     Dictionary<Vector2, GameObject> dcmap = new Dictionary<Vector2, GameObject>();
+    Dictionary<Vector2, DetectorController> dcdcmap = new Dictionary<Vector2, DetectorController>();
     public bool platform
     {
         get
@@ -78,18 +82,8 @@ public class PlayerController : MonoBehaviour
             item.Value.GetComponent<Collider>().enabled = false;
             item.Value.GetComponent<Collider>().enabled = true;
 
+            dcdcmap.Add(item.Key, item.Value.GetComponent<DetectorController>());
         }
-        /*
-        dcceUp.transform.position = transform.position + new Vector3(Vector2.up.x, 0, Vector2.up.y);
-        dcceDown.transform.position = transform.position + new Vector3(Vector2.down.x, 0, Vector2.down.y);
-        dcceLeft.transform.position = transform.position + new Vector3(Vector2.left.x, 0, Vector2.left.y);
-        dcceRight.transform.position = transform.position + new Vector3(Vector2.right.x, 0, Vector2.right.y);
-        */
-
-        //dc.transform.position = transform.position + new Vector3(v.x, 0, v.y);
-
-        //DetectorController dcc = dc.GetComponent<DetectorController>();
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -97,21 +91,22 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("enemy"))
         {
             kill();
-
         }
+
         if (other.CompareTag("ground"))
         {
             snapObject = null;
             platCounter = 0;
         }
+
         if (other.CompareTag("platform"))
         {
             platCounter++;
         }
+
         if (other.CompareTag("pit"))
         {
             pitCounter++;
-            //doesit = true;
         }
     }
     public void OnTriggerExit(Collider other)
@@ -130,7 +125,6 @@ public class PlayerController : MonoBehaviour
     }
     void kill()
     {
-
         transform.position = initialPosition;
         bVector = initialPosition;
         aVector = initialPosition;
@@ -138,6 +132,7 @@ public class PlayerController : MonoBehaviour
 
         snapObject = null;
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -145,37 +140,45 @@ public class PlayerController : MonoBehaviour
         {
             platCounter = 0;
         }
+
         Debug.Log("snapPos : " + snapPos);
+
+        //Debug resetting
         if (Input.GetKey(KeyCode.Space))
         {
             kill();
         }
+
+        //If we are not attached to a platform
         if (snapObject != null)
         {
             Vector3 go = snapObject.transform.position + snapPos;
             go.y = transform.position.y;
             transform.position = go;
         }
+
+        //If we are not moving
         if (lerpTimer > lerpDuration)
         {
             if (Input.GetKey(KeyCode.RightArrow))
             {
-                Spawn(Vector2.right);
+                Move(Vector2.right);
             }
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                Spawn(Vector2.left);
+                Move(Vector2.left);
             }
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                Spawn(Vector2.up);
+                Move(Vector2.up);
             }
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                Spawn(Vector2.down);
+                Move(Vector2.down);
             }
         }
 
+        //If we are moving
         if (lerpTimer <= lerpDuration)
         {
             if (snapObject!=null)
@@ -191,8 +194,11 @@ public class PlayerController : MonoBehaviour
 
             transform.position = new Vector3(x, y, z);
         }
+
+        //If we are not moving
         if(lerpTimer > lerpDuration)
         {
+            //If we are colliding with a pit object
             if (pit)
             {
                 if (!platform)
@@ -200,20 +206,18 @@ public class PlayerController : MonoBehaviour
                     kill();
                 }
             }
+
+            //If we are colliding with a platform object
             if (platform)
             {
-
                 if (snapObject == null)
                 {
-
                     kill();
                 }
             }
-            //check if bottom has object!
-            //if not, KILL
-            //if so, ATTACH
         }
 
+        //Move all detector cubes along with player
         foreach (var item in dcmap)
         {
             item.Value.transform.position = transform.position + new Vector3(item.Key.x, 0, item.Key.y);
@@ -221,19 +225,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
-    void Spawn(Vector2 v)
+    void Move(Vector2 v)
     {
-        DetectorController dcCube = dcmap[v].GetComponent<DetectorController>();
+        DetectorController dcCube = dcdcmap[v];
 
-        if (dcCube.doesit == true)
+        if (dcCube.ground == true)
         {
-
             aVector = transform.position;
             bVector = transform.position + new Vector3(v.x, 0, v.y);
             lerpTimer = 0f;
             snapObject = null;
-
         }
 
         if (dcCube.pit == true && dcCube.SnapObject() == null)
@@ -247,21 +248,7 @@ public class PlayerController : MonoBehaviour
 
         if (dcCube.SnapObject() != null)
         {
-            VehicleController dcve = dcCube.SnapObject().GetComponent<VehicleController>();
-            float gap = 0f;
-            if (snapObject == dcCube.SnapObject())
-            {
-                if (dcve.GetDir() == v*-1)
-                {
-                  //  gap = dcve.GetSpeed() * lerpDuration;
-                }
-               //ap = -dcCube.SnapObject().GetComponent<VehicleController>().GetSpeed() * lerpDuration;
-            }
             snapObject = dcCube.SnapObject();
-            //snapPos = snapObject.transform.InverseTransformPoint(dcCube.transform.position);
-
-            //get snapobject size
-            //
 
             float xx = Math.Abs(snapObject.transform.position.x - dcCube.transform.position.x) * -Math.Sign(snapObject.transform.position.x - dcCube.transform.position.x);
             float zz = Math.Abs(snapObject.transform.position.z - dcCube.transform.position.z) * -Math.Sign(snapObject.transform.position.z - dcCube.transform.position.z);
@@ -271,12 +258,12 @@ public class PlayerController : MonoBehaviour
 
                 if (snapObject.transform.localScale.x < snapObject.transform.localScale.z)
                 {
-                    zz = (float)Math.Round(zz) + 0.5f + gap;
+                    zz = (float)Math.Round(zz) + 0.5f;
                     xx = (float)Math.Round(xx);
                 }
                 else
                 {
-                    xx = (float)Math.Round(xx) + 0.5f + gap;
+                    xx = (float)Math.Round(xx) + 0.5f;
                     zz = (float)Math.Round(zz);
 
                 }
@@ -296,39 +283,21 @@ public class PlayerController : MonoBehaviour
 
                 }
             }
+
+
             if (zz > snapObject.transform.lossyScale.z/2)
             {
                 zz--;
             }
             if (xx > snapObject.transform.lossyScale.x/2)
             {
-                xx--;
+                xx--; 
             }
-
-            //ADD obstacle SPEED PLUS CHARAC SPEED
-
 
             snapPos = new Vector3(xx, transform.position.y, zz);
             aVector = transform.position;
-            //bVector = dcCube.transform.position;
             bVector = new Vector3(snapObject.transform.position.x, 0, snapObject.transform.position.z) + snapPos;
             lerpTimer = 0f;
         }
-
-        /*
-        if (dcCube.SnapObject() != null)
-        {
-            snapObject = dcCube.SnapObject();
-            //snapPos = snapObject.transform.InverseTransformPoint(dcCube.transform.position);
-
-            float xx = Math.Abs(snapObject.transform.position.x - dcCube.transform.position.x) * -Math.Sign(snapObject.transform.position.x - dcCube.transform.position.x);
-            float zz = Math.Abs(snapObject.transform.position.z - dcCube.transform.position.z) * -Math.Sign(snapObject.transform.position.z - dcCube.transform.position.z);
-            snapPos = new Vector3(xx, transform.position.y, zz);
-            aVector = transform.position;
-            //bVector = dcCube.transform.position;
-            bVector = new Vector3(snapObject.transform.position.x, 0, snapObject.transform.position.z) + snapPos;
-            lerpTimer = 0f;
-        }*/
-
     }
 }
