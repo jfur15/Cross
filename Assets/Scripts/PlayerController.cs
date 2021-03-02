@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
             platCounter = 0;
         }
 
-        Debug.Log("snapPos : " + snapPos);
+        //Debug.Log("snapPos : " + snapPos);
 
         //Debug resetting
         if (Input.GetKey(KeyCode.Space))
@@ -215,6 +215,8 @@ public class PlayerController : MonoBehaviour
                     kill();
                 }
             }
+
+            
         }
 
         //Move all detector cubes along with player
@@ -229,17 +231,34 @@ public class PlayerController : MonoBehaviour
     {
         DetectorController dcCube = dcdcmap[v];
 
+        GameObject dCube = dcmap[v];
+
         if (dcCube.ground == true)
         {
+            //Walk normally
+            float xx = (float)Math.Round(dCube.transform.position.x * 2, MidpointRounding.AwayFromZero) / 2;
+            float yy = (float)Math.Round(dCube.transform.position.z * 2, MidpointRounding.AwayFromZero) / 2;
+            if (xx % 2 == 0)
+            {
+                xx += 0.5f;
+            }
+            if (yy % 2 == 0)
+            {
+                yy += 0.5f;
+            }
+
+
+
+                Vector2 otherbVector = transform.position + new Vector3(v.x, 0, v.y);
             aVector = transform.position;
-            bVector = transform.position + new Vector3(v.x, 0, v.y);
+            bVector = new Vector3(xx, transform.position.y, yy);
             lerpTimer = 0f;
             snapObject = null;
         }
 
         if (dcCube.pit == true && dcCube.SnapObject() == null)
         {
-
+            //Walk straight forward into the pit
             aVector = transform.position;
             bVector = transform.position + new Vector3(v.x, 0, v.y);
             lerpTimer = 0f;
