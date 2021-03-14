@@ -8,10 +8,10 @@ public class SegmentController : MonoBehaviour
     int xSize;
     int zSize;
 
-    public GameObject enemyGround;
+    public GameObject groundCollider;
     public GameObject spawner;
 
-    GameObject gbb;
+    GameObject myGroundCollider;
 
 
     // Start is called before the first frame update
@@ -26,13 +26,13 @@ public class SegmentController : MonoBehaviour
         //get bottom left corner
 
         ///*
-        gbb = Instantiate(enemyGround);
-        gbb.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        gbb.transform.position = transform.position;
-        gbb.GetComponent<BoxCollider>().size = new Vector3(1.1f, 1, 1.1f);
-        int rightSide = xSize;
-        Starter(new Vector2(0,5), Vector2.right);
-        Starter(new Vector2(xSize, 3), Vector2.left);
+        myGroundCollider = Instantiate(groundCollider);
+        myGroundCollider.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        myGroundCollider.transform.position = transform.position;
+        myGroundCollider.GetComponent<BoxCollider>().size = new Vector3(1.1f, 1, 1.1f);
+
+        //Starter(new Vector2(0,5), Vector2.right);
+        //Starter(new Vector2(xSize, 3), Vector2.left);
 
         //gbb.GetComponent<BoxCollider>().bounds.
 
@@ -58,9 +58,10 @@ public class SegmentController : MonoBehaviour
 
 
     }
-    void Starter(Vector2 start, Vector2 mydir)
-    {
 
+
+    public void CreateSpawner(Vector2 start, Vector2 mydir)
+    {
         GameObject spa = Instantiate(spawner);
         Bounds mybds = GetComponent<BoxCollider>().bounds;
         SpawnController spawn = spa.GetComponent<SpawnController>();

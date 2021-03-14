@@ -246,10 +246,6 @@ public class PlayerController : MonoBehaviour
             {
                 yy += 0.5f;
             }
-
-
-
-                Vector2 otherbVector = transform.position + new Vector3(v.x, 0, v.y);
             aVector = transform.position;
             bVector = new Vector3(xx, transform.position.y, yy);
             lerpTimer = 0f;
