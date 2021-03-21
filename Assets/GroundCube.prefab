@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 79922eba005fc014eb40a495359ef622, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,5 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d12720c61297454f98015bdba7f25db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyGround: {fileID: 9144086804627616545, guid: 1f375ad49362b7f4dbae00fb6104dd28, type: 3}
+  groundCollider: {fileID: 9144086804627616545, guid: 1f375ad49362b7f4dbae00fb6104dd28, type: 3}
   spawner: {fileID: 8891478141458994327, guid: ba478b138992b4841886036b66f8f9dc, type: 3}
