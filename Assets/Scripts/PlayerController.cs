@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     //Avector is the original, bvector is the vector to lerp to
     Vector3 aVector = new Vector3();
     Vector3 bVector = new Vector3();
-
+    public Vector2 coordinates = new Vector2();
     float lerpTimer = 0f;
     float lerpDuration = 0f;
 
@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
             return false;
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -97,6 +98,7 @@ public class PlayerController : MonoBehaviour
         {
             snapObject = null;
             platCounter = 0;
+            coordinates = other.GetComponent<SegmentController>().GetCoordinates();
         }
 
         if (other.CompareTag("platform"))
@@ -235,6 +237,7 @@ public class PlayerController : MonoBehaviour
 
         if (dcCube.ground == true)
         {
+            //coordinates(snapObject.GetComponent<SegmentController>().GetCoordinates());
             //Walk normally
             float xx = (float)Math.Round(dCube.transform.position.x * 2, MidpointRounding.AwayFromZero) / 2;
             float yy = (float)Math.Round(dCube.transform.position.z * 2, MidpointRounding.AwayFromZero) / 2;
@@ -264,6 +267,7 @@ public class PlayerController : MonoBehaviour
         if (dcCube.SnapObject() != null)
         {
             snapObject = dcCube.SnapObject();
+
 
             float xx = Math.Abs(snapObject.transform.position.x - dcCube.transform.position.x) * -Math.Sign(snapObject.transform.position.x - dcCube.transform.position.x);
             float zz = Math.Abs(snapObject.transform.position.z - dcCube.transform.position.z) * -Math.Sign(snapObject.transform.position.z - dcCube.transform.position.z);

@@ -28,7 +28,8 @@ public class VehicleController : MonoBehaviour
 
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.CompareTag(transform.parent.tag))
+        //if (collision.gameObject.CompareTag(transform.parent.tag))
+        if (collision.gameObject == transform.parent.gameObject)
         {
             Destroy(gameObject);
         }

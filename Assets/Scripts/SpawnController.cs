@@ -6,7 +6,7 @@ public class SpawnController : MonoBehaviour
 {
     public GameObject vehicleObject;
     float spawnTimer = 0f;
-    public float spawnDuration = 2f;
+    public float spawnDuration = .5f;
     public float gap = .5f;
     GameObject segment;
     BoxCollider segmentBox;

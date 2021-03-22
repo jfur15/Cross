@@ -26,6 +26,7 @@ public class MapControllerScript : MonoBehaviour
 
         Cell[,] mapp = new Cell[map.width, map.height];
         Color[,] colors = new Color[map.width, map.height];
+
         var xx = map.GetPixels();
 
         for (int i = 0; i < map.height; i++)
@@ -33,13 +34,13 @@ public class MapControllerScript : MonoBehaviour
             for (int j = 0; j < map.width; j++)
             {
                 Color pixel = xx[(i * 32) + j];
-                colors[i, j] = pixel;
+                colors[j,i] = pixel;
             }
         }
-        for(int i = 0; i < map.height; i++)
+        for(int i = map.height-1; i >=0 ; i--)
         {
 
-            for (int j = 0; j < map.width; j++)
+            for (int j = map.height - 1; j >= 0; j--)
             {
                 Color pixel = colors[i, j];
                 if (pixel.a < 1)
@@ -56,13 +57,13 @@ public class MapControllerScript : MonoBehaviour
 
                     if (vert && !horizOR)
                     {
-                        mapp[i, j] = Cell.horizontal;
+                        mapp[i, j] = Cell.vertical;
 
                     }
                     else if (horiz && !vertOR)
                     {
 
-                        mapp[i, j] = Cell.vertical;
+                        mapp[i, j] = Cell.horizontal;
                     }
                     else
                     {
@@ -76,9 +77,9 @@ public class MapControllerScript : MonoBehaviour
 
         int cellSize = 8;
 
-        for (int y = 0; y < map.height; y++)
+        for (int x = 0; x < map.height; x++)
         {
-            for (int x = 0; x < map.width; x++)
+            for (int y = 0; y < map.width; y++)
             {
 
                 Vector2 pos = new Vector2((x * cellSize), (y * cellSize));
@@ -98,6 +99,7 @@ public class MapControllerScript : MonoBehaviour
                     GameObject newSafe = Instantiate(safeObject);
                     newSafe.transform.localScale = new Vector3(cellSize, newSafe.transform.localScale.y, cellSize);
                     newSafe.transform.position = new Vector3(pos.x, newSafe.transform.position.y, pos.y);
+                    newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                 }
                 if (mapp[x, y] == Cell.horizontal)
                 {
@@ -107,6 +109,7 @@ public class MapControllerScript : MonoBehaviour
                     newSafe.transform.position = new Vector3(pos.x, newSafe.transform.position.y, pos.y);
                     newSafe.GetComponent<SegmentController>().CreateSpawnerOnOff(true);
                     newSafe.GetComponent<Renderer>().material.color = Color.blue;
+                    newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                 }
                 if (mapp[x, y] == Cell.vertical)
                 {
@@ -116,6 +119,7 @@ public class MapControllerScript : MonoBehaviour
                     newSafe.transform.position = new Vector3(pos.x, newSafe.transform.position.y, pos.y);
                     newSafe.GetComponent<SegmentController>().CreateSpawnerOnOff(false); 
                     newSafe.GetComponent<Renderer>().material.color = Color.magenta;
+                    newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                 }
             }
         }

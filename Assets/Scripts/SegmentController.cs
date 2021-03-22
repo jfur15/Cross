@@ -13,6 +13,8 @@ public class SegmentController : MonoBehaviour
 
     GameObject myGroundCollider;
 
+    Vector2 coordinates = new Vector2();
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +60,20 @@ public class SegmentController : MonoBehaviour
 
 
     }
+    public void SetCoordinates(Vector2 x)
+    {
+        coordinates = x;
+        GameObject xx = new GameObject();
+        TextMesh tm = xx.AddComponent<TextMesh>();
+        tm.text = coordinates.ToString();
+        tm.transform.SetParent(gameObject.transform);
+        tm.transform.position = gameObject.transform.position;
 
+    }
+    public Vector2 GetCoordinates()
+    {
+        return coordinates;
+    }
 
     public void CreateSpawner(Vector2 start, Vector2 mydir)
     {
@@ -76,28 +91,52 @@ public class SegmentController : MonoBehaviour
     }
     public void CreateSpawnerOnOff(bool horizontal)
     {
+
         Bounds mybds = GetComponent<BoxCollider>().bounds;
 
         Vector2 mydir = Vector2.right;
-        if (horizontal)
+        if (!horizontal)
         {
             mydir = Vector2.up;
-        }
+            for (int i = 0; i <= mybds.size.x + 1; i++)
+            {
+                GameObject spa = Instantiate(spawner);
+                SpawnController spawn = spa.GetComponent<SpawnController>();
 
-        for (int i = 0; i < mybds.size.x; i++)
+                spawn.dir = mydir;
+
+
+                float xv = transform.position.x - (int)(mybds.size.x  / 2) + ((i) - 0.5f);
+                float zv = transform.position.z - ((mybds.size.z * mydir.y / 2));
+                float yv = 0f;
+                spa.transform.position = new Vector3(xv, yv, zv);
+
+                spa.transform.parent = transform;
+                mydir = -mydir;
+            }
+
+        }
+        else
         {
-            GameObject spa = Instantiate(spawner);
-            SpawnController spawn = spa.GetComponent<SpawnController>();
+            for (int i = 0; i <= mybds.size.x+1; i++)
+            {
+                GameObject spa = Instantiate(spawner);
+                SpawnController spawn = spa.GetComponent<SpawnController>();
 
-            spawn.dir = mydir;
-            float xv = transform.position.x - ((mybds.size.x / 2) * mydir.x)-0.5f;
-            float yv = 0f;
-            float zv = transform.position.z - (int)(mybds.size.z / 2) + (i)-0.5f;
-            spa.transform.position = new Vector3(xv, yv, zv);
+                spawn.dir = mydir;
 
-            spa.transform.parent = transform;
-            mydir = -mydir;
+
+                float xv = transform.position.x - ((mybds.size.x*mydir.x / 2));
+                float yv = 0f;
+                float zv = transform.position.z - (int)(mybds.size.z / 2) + ((i) - 0.5f);
+                spa.transform.position = new Vector3(xv, yv, zv);
+
+                spa.transform.parent = transform;
+                mydir = -mydir;
+            }
         }
+
+        
 
 
     }
