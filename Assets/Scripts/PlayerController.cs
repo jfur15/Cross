@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     Vector3 aVector = new Vector3();
     Vector3 bVector = new Vector3();
     public Vector2 coordinates = new Vector2();
+
+    Vector3 checkpoint = new Vector2();
     float lerpTimer = 0f;
     float lerpDuration = 0f;
 
@@ -99,6 +101,7 @@ public class PlayerController : MonoBehaviour
             snapObject = null;
             platCounter = 0;
             coordinates = other.GetComponent<SegmentController>().GetCoordinates();
+            checkpoint = aVector;
         }
 
         if (other.CompareTag("platform"))
@@ -113,7 +116,10 @@ public class PlayerController : MonoBehaviour
     }
     public void OnTriggerExit(Collider other)
     {
-
+        if (other.CompareTag("ground"))
+        {
+            //checkpoint = new Vector3(other.transform.position.x, gameObject.transform.position.y, other.transform.position.z);
+        }
         if (other.CompareTag("platform"))
         {
             platCounter--;
@@ -127,6 +133,7 @@ public class PlayerController : MonoBehaviour
     }
     void kill()
     {
+        initialPosition = checkpoint;
         transform.position = initialPosition;
         bVector = initialPosition;
         aVector = initialPosition;

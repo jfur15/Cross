@@ -15,7 +15,23 @@ public class SegmentController : MonoBehaviour
 
     Vector2 coordinates = new Vector2();
 
-
+    List<GameObject> spawners = new List<GameObject>();
+    /*
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("activeplayer"))
+        {
+            gameObject.SetActive(true);
+        }
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("activeplayer"))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+    */
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +49,8 @@ public class SegmentController : MonoBehaviour
         myGroundCollider.transform.position = transform.position;
         myGroundCollider.GetComponent<BoxCollider>().size = new Vector3(1.1f, 1, 1.1f);
 
+
+       //gameObject.SetActive(false);
         //Starter(new Vector2(0,5), Vector2.right);
         //Starter(new Vector2(xSize, 3), Vector2.left);
 
@@ -59,6 +77,14 @@ public class SegmentController : MonoBehaviour
         //*/
 
 
+    }
+    public void SetActiveSpawners(bool enable)
+    {
+        foreach (GameObject item in spawners)
+        {
+            item.SetActive(enable);
+        }
+        
     }
     public void SetCoordinates(Vector2 x)
     {
@@ -88,6 +114,7 @@ public class SegmentController : MonoBehaviour
         spa.transform.position = new Vector3(xv, yv, zv);
         spa.transform.parent = transform;
 
+
     }
     public void CreateSpawnerOnOff(bool horizontal)
     {
@@ -113,6 +140,7 @@ public class SegmentController : MonoBehaviour
 
                 spa.transform.parent = transform;
                 mydir = -mydir;
+                spawners.Add(spa);
             }
 
         }
@@ -133,10 +161,12 @@ public class SegmentController : MonoBehaviour
 
                 spa.transform.parent = transform;
                 mydir = -mydir;
+
+                spawners.Add(spa);
             }
         }
+        SetActiveSpawners(false);
 
-        
 
 
     }

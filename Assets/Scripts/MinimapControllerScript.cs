@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class MinimapControllerScript : MonoBehaviour
 {
-    public GameObject MapController;
-    public GameObject pixel;
+    public GameObject mapController;
+    MapControllerScript mcs;
+    public GameObject pixelPrefab;
     public GameObject player;
-    GameObject playerPixel;
+    PixelControllerScript playerPixel;
+    PixelControllerScript endPointPixel;
+    public GameObject missionCubeObject;
     void Awake()
     {
 
@@ -16,16 +19,38 @@ public class MinimapControllerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Texture2D mapTexture = MapController.GetComponent<MapControllerScript>().map;
+        mcs = mapController.GetComponent<MapControllerScript>();
+        Texture2D mapTexture =mcs.mapTexture;
         Sprite mapSprite = Sprite.Create(mapTexture, new Rect(0f, 0f, mapTexture.width, mapTexture.height), new Vector2(0.5f,0.5f));
         gameObject.GetComponent<Image>().sprite = mapSprite;
-        //create a object 
-        playerPixel = Instantiate(pixel);
-        //px.transform.parent = gameObject.transform;
+
+        playerPixel = Instantiate(pixelPrefab).GetComponent<PixelControllerScript>();
         playerPixel.transform.SetParent(gameObject.transform);
-        RectTransform rt = playerPixel.GetComponent<RectTransform>();
-        rt.localPosition = new Vector3(0, 0, 0);
-        rt.localScale = new Vector3(1,1,1);
+
+        endPointPixel = Instantiate(pixelPrefab).GetComponent<PixelControllerScript>();
+        endPointPixel.transform.SetParent(gameObject.transform);
+        endPointPixel.SetPosition(new Vector2Int(0, 0));
+        endPointPixel.GetComponent<CanvasRenderer>().SetColor(Color.red);
+        endPointPixel.SetBlinking();
+        CreateMission();
+    }
+    void CreateMission()
+    {
+        //check for empty cells
+        var blanks = mcs.blanks;
+        Vector2Int startPoint = blanks[Random.Range(0, blanks.Count - 1)];
+        Vector2Int endPoint = blanks[Random.Range(0, blanks.Count - 1)];
+
+        GameObject newSafe = mcs.GetSegment(startPoint);
+
+        MissionController mission = Instantiate(missionCubeObject).GetComponent<MissionController>();
+        mission.transform.SetParent(newSafe.transform);
+        mission.SetPoints(startPoint, endPoint);
+        mission.transform.position = new Vector3(newSafe.transform.position.x - newSafe.transform.localScale.x / 2 + 0.5f, -0.12f, newSafe.transform.position.z - newSafe.transform.localScale.z / 2 + 0.5f);
+
+        Vector2 poss = new Vector2(Random.Range(1, 7), Random.Range(1, 7));
+        mission.transform.position += new Vector3(poss.x, 0, poss.y);
+        endPointPixel.SetPosition(endPoint);
     }
 
     public void SetPlayer(Vector2 pos)
@@ -38,6 +63,6 @@ public class MinimapControllerScript : MonoBehaviour
     void Update()
     {
         Vector2 coo = player.GetComponent<PlayerController>().coordinates;
-        playerPixel.GetComponent<RectTransform>().localPosition = new Vector3(coo.x-32, coo.y, 0);
+        playerPixel.SetPosition(coo);
     }
 }

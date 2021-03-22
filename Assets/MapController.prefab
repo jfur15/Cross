@@ -46,3 +46,4 @@ MonoBehaviour:
   map: {fileID: 2800000, guid: 5a637587e35260c4585e58defb05a2c3, type: 3}
   buildingObject: {fileID: 412972943979611808, guid: 09fccbd6bfff1fb4b8e22f5f4cf9b606, type: 3}
   safeObject: {fileID: 2696385420990946656, guid: daab19d4d8683a745ac356dc1fd949c0, type: 3}
+  missionCubeObject: {fileID: 2788832009272725495, guid: de19f03c66ad59b45846bc0cc4693f6c, type: 3}

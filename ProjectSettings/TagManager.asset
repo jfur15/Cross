@@ -9,6 +9,7 @@ TagManager:
   - enemyground
   - platform
   - pit
+  - activeplayer
   layers:
   - Default
   - TransparentFX
