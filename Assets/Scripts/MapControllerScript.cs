@@ -142,22 +142,6 @@ public class MapControllerScript : MonoBehaviour
     {
         return mappO[vs.x, vs.y];
     }
-   /* void CreateMission()
-    {
-        //check for empty cells
-        Vector2Int startPoint = blanks[Random.Range(0, blanks.Count - 1)];
-        Vector2Int endPoint = blanks[Random.Range(0, blanks.Count - 1)];
-
-        GameObject newSafe = mappO[startPoint.x, startPoint.y];
-
-        MissionController mission = Instantiate(missionCubeObject).GetComponent<MissionController>();
-        mission.SetPoints(startPoint, endPoint);
-        mission.transform.position = new Vector3(newSafe.transform.position.x - newSafe.transform.localScale.x / 2 + 0.5f, -0.12f, newSafe.transform.position.z - newSafe.transform.localScale.z / 2 + 0.5f);
-
-        Vector2 poss = new Vector2(Random.Range(1, 7), Random.Range(1, 7));
-        mission.transform.position += new Vector3(poss.x, 0, poss.y);
-
-    }*/
 
     // Update is called once per frame
     void Update()

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5679517148807322862}
   m_Layer: 0
   m_Name: MissionCube
-  m_TagString: Untagged
+  m_TagString: mission
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,3 +110,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapController: {fileID: 9060822331542075885, guid: 79d568497b965cb428d356eb006602c6, type: 3}
   pixelPrefab: {fileID: 5138910557364894639, guid: f56a49ea74f88644f9f7f8e9a3151287, type: 3}
+  endPoint: {x: 0, y: 0}

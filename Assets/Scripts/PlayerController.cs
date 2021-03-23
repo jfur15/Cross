@@ -32,6 +32,12 @@ public class PlayerController : MonoBehaviour
 
     Dictionary<Vector2, GameObject> dcmap = new Dictionary<Vector2, GameObject>();
     Dictionary<Vector2, DetectorController> dcdcmap = new Dictionary<Vector2, DetectorController>();
+
+    public GameObject uiPrefab;
+    UIControllerScript uiController;
+
+    GameObject missionObject = null;
+
     public bool platform
     {
         get
@@ -75,6 +81,7 @@ public class PlayerController : MonoBehaviour
         dcmap.Add(Vector2.left, Instantiate(detectorCube));
         dcmap.Add(Vector2.right, Instantiate(detectorCube));
 
+        uiController = uiPrefab.GetComponent<UIControllerScript>();
 
         foreach (var item in dcmap)
         {
@@ -101,6 +108,7 @@ public class PlayerController : MonoBehaviour
             snapObject = null;
             platCounter = 0;
             coordinates = other.GetComponent<SegmentController>().GetCoordinates();
+
             checkpoint = aVector;
         }
 
@@ -113,6 +121,17 @@ public class PlayerController : MonoBehaviour
         {
             pitCounter++;
         }
+        if (other.CompareTag("mission"))
+        {
+            uiController.HoverEnter(other.gameObject.GetComponent<MissionController>().endPoint);
+            missionObject = other.gameObject;
+        }
+        if (other.CompareTag("missionend"))
+        {
+            uiController.EndEnter();
+            Destroy(other.gameObject);
+            missionObject = null;
+        }
     }
     public void OnTriggerExit(Collider other)
     {
@@ -123,14 +142,19 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("platform"))
         {
             platCounter--;
-            //doesit = true;
         }
         if (other.CompareTag("pit"))
         {
              pitCounter--;
-            //doesit = true;
+        }
+        if (other.CompareTag("mission"))
+        {
+            uiController.HoverExit();
+            missionObject = null;
         }
     }
+
+    //Debug kill method
     void kill()
     {
         initialPosition = checkpoint;
@@ -155,7 +179,11 @@ public class PlayerController : MonoBehaviour
         //Debug resetting
         if (Input.GetKey(KeyCode.Space))
         {
-            kill();
+            //  kill();
+            if (missionObject!=null)
+            {
+                uiController.StartMission(missionObject);
+            }
         }
 
         //If we are not attached to a platform
@@ -225,8 +253,10 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
+
             
         }
+
 
         //Move all detector cubes along with player
         foreach (var item in dcmap)
