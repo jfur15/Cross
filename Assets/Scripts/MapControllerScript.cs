@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Cell
+public enum Cell
 {
     horizontal,
     vertical,
@@ -20,8 +20,9 @@ public class MapControllerScript : MonoBehaviour
     GameObject[,] mappO;
     public List<Vector2Int> blanks = new List<Vector2Int>();
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+
         //import png
         //get cell size
         //set ZERO point
@@ -39,10 +40,10 @@ public class MapControllerScript : MonoBehaviour
             for (int j = 0; j < mapTexture.width; j++)
             {
                 Color pixel = xx[(i * 32) + j];
-                colors[j,i] = pixel;
+                colors[j, i] = pixel;
             }
         }
-        for(int i = mapTexture.height-1; i >=0 ; i--)
+        for (int i = mapTexture.height - 1; i >= 0; i--)
         {
 
             for (int j = mapTexture.height - 1; j >= 0; j--)
@@ -55,8 +56,8 @@ public class MapControllerScript : MonoBehaviour
 
                 else
                 {
-                    bool vert = colors[i+1, j].a >= 1 && colors[i - 1, j].a >= 1;
-                    bool horiz = colors[i, j+1].a >= 1 && colors[i, j-1].a >= 1;
+                    bool vert = colors[i + 1, j].a >= 1 && colors[i - 1, j].a >= 1;
+                    bool horiz = colors[i, j + 1].a >= 1 && colors[i, j - 1].a >= 1;
                     bool vertOR = colors[i + 1, j].a >= 1 || colors[i - 1, j].a >= 1;
                     bool horizOR = colors[i, j + 1].a >= 1 || colors[i, j - 1].a >= 1;
 
@@ -75,7 +76,7 @@ public class MapControllerScript : MonoBehaviour
                         mapp[i, j] = Cell.safe;
 
                     }
-                    
+
                 }
             }
         }
@@ -92,9 +93,9 @@ public class MapControllerScript : MonoBehaviour
                 if (mapp[x, y] == Cell.wall)
                 {
                     GameObject newBuilding = Instantiate(buildingObject);
-                    newBuilding.transform.localScale = new Vector3(cellSize, Random.Range(cellSize/2, cellSize*2), cellSize);
+                    newBuilding.transform.localScale = new Vector3(cellSize, Random.Range(cellSize / 2, cellSize * 2), cellSize);
                     //newBuilding.transform.localScale = new Vector3(cellSize, cellSize/2, cellSize);
-                    newBuilding.transform.position = new Vector3(pos.x, newBuilding.transform.localScale.y/2 - 1, pos.y);
+                    newBuilding.transform.position = new Vector3(pos.x, newBuilding.transform.localScale.y / 2 - 1, pos.y);
                     mappO[x, y] = newBuilding;
                 }
 
@@ -108,6 +109,7 @@ public class MapControllerScript : MonoBehaviour
                     newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
 
                     mappO[x, y] = newSafe;
+                    mappO[x, y].GetComponent<SegmentController>().cellType = mapp[x, y];
                 }
                 if (mapp[x, y] == Cell.horizontal)
                 {
@@ -119,6 +121,7 @@ public class MapControllerScript : MonoBehaviour
                     newSafe.GetComponent<Renderer>().material.color = Color.blue;
                     newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                     mappO[x, y] = newSafe;
+                    mappO[x, y].GetComponent<SegmentController>().cellType = mapp[x, y];
 
                 }
                 if (mapp[x, y] == Cell.vertical)
@@ -127,16 +130,21 @@ public class MapControllerScript : MonoBehaviour
                     GameObject newSafe = Instantiate(safeObject);
                     newSafe.transform.localScale = new Vector3(cellSize, newSafe.transform.localScale.y, cellSize);
                     newSafe.transform.position = new Vector3(pos.x, newSafe.transform.position.y, pos.y);
-                    newSafe.GetComponent<SegmentController>().CreateSpawnerOnOff(false); 
+                    newSafe.GetComponent<SegmentController>().CreateSpawnerOnOff(false);
                     newSafe.GetComponent<Renderer>().material.color = Color.magenta;
                     newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                     mappO[x, y] = newSafe;
+                    mappO[x, y].GetComponent<SegmentController>().cellType = mapp[x, y];
                 }
             }
         }
 
         //CreateMission();
         Debug.Log("hello");
+    }
+
+    void Start()
+    {
     }
     public GameObject GetSegment(Vector2Int vs)
     {

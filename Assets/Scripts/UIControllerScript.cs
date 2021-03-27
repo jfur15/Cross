@@ -1,26 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum States
+using UnityEngine.SceneManagement;
+public enum MissionState
 {
-
+    NoMission,
+    PossibleMission,
+    OnMission
 }
 
 public class UIControllerScript : MonoBehaviour
 {
     public MinimapControllerScript minimapController;
+    public TimerControllerScript timerController;
     bool takenMission = false;
+    MissionState missionState;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        SetState(MissionState.NoMission);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void SetState(MissionState newState)
+    {
+
     }
 
     public void HoverEnter(Vector2Int coords)
@@ -49,7 +60,13 @@ public class UIControllerScript : MonoBehaviour
 
             minimapController.TakeMission(missionCube);
             takenMission = true;
+            timerController.AddTime(30);
         }
+    }
+
+    public void TimeOut()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 
     public void EndEnter()

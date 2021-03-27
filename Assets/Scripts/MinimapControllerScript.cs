@@ -95,7 +95,7 @@ public class MinimapControllerScript : MonoBehaviour
     public void EndMission()
     {
         //set new mission cubes
-        endPointPixel.TurnOff();
+        HideMission();
     }
 
     // Update is called once per frame

@@ -108,8 +108,11 @@ public class PlayerController : MonoBehaviour
             snapObject = null;
             platCounter = 0;
             coordinates = other.GetComponent<SegmentController>().GetCoordinates();
+            if (other.GetComponent<SegmentController>().cellType == Cell.safe)
+            {
 
-            checkpoint = aVector;
+                checkpoint = bVector;
+            }
         }
 
         if (other.CompareTag("platform"))
@@ -130,7 +133,6 @@ public class PlayerController : MonoBehaviour
         {
             uiController.EndEnter();
             Destroy(other.gameObject);
-            missionObject = null;
         }
     }
     public void OnTriggerExit(Collider other)
@@ -138,6 +140,11 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("ground"))
         {
             //checkpoint = new Vector3(other.transform.position.x, gameObject.transform.position.y, other.transform.position.z);
+            if (other.GetComponent<SegmentController>().cellType == Cell.safe)
+            {
+
+                checkpoint = aVector;
+            }
         }
         if (other.CompareTag("platform"))
         {

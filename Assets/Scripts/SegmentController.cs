@@ -16,6 +16,9 @@ public class SegmentController : MonoBehaviour
     Vector2 coordinates = new Vector2();
 
     List<GameObject> spawners = new List<GameObject>();
+
+    public Cell cellType;
+
     /*
     public void OnTriggerEnter(Collider other)
     {
