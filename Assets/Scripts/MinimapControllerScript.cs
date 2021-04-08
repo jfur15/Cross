@@ -13,9 +13,11 @@ public class MinimapControllerScript : MonoBehaviour
     PixelControllerScript playerPixel;
     PixelControllerScript endPointPixel;
 
+
+
     public GameObject missionPrefab;
     public GameObject missionEndPrefab;
-
+    public GameObject timerAddText;
     void Awake()
     {
 
@@ -46,6 +48,8 @@ public class MinimapControllerScript : MonoBehaviour
             }
             CreateMission(startPoint, endPoint);
         }
+        timerAddText.SetActive(false);
+
     }
     void CreateMission(Vector2Int startPoint, Vector2Int endPoint)
     {
@@ -58,7 +62,7 @@ public class MinimapControllerScript : MonoBehaviour
 
         Vector2 poss = new Vector2(Random.Range(1, 7), Random.Range(1, 7));
         mission.transform.position += new Vector3(poss.x, 0, poss.y);
-        ShowMission(endPoint);
+        ShowMission(endPoint, mission.time);
         HideMission();
 
     }
@@ -70,14 +74,18 @@ public class MinimapControllerScript : MonoBehaviour
         Vector2Int endPoint = blanks[Random.Range(0, blanks.Count - 1)];
         CreateMission(startPoint, endPoint);
     }
-    public void ShowMission(Vector2Int coords)
+    public void ShowMission(Vector2Int coords, int time)
     {
         endPointPixel.TurnOn();
         endPointPixel.SetPosition(coords);
+        timerAddText.GetComponent<Text>().text = "+" + time.ToString();
+        timerAddText.SetActive(true);
     }
     public void HideMission()
     {
         endPointPixel.TurnOff();
+        timerAddText.SetActive(false);
+        //hide tiem add
     }
 
     public void TakeMission(GameObject missionCube)
@@ -90,6 +98,7 @@ public class MinimapControllerScript : MonoBehaviour
         missionendCube.transform.position = new Vector3(newSafe.transform.position.x - newSafe.transform.localScale.x / 2 + 0.5f, -0.12f, newSafe.transform.position.z - newSafe.transform.localScale.z / 2 + 0.5f);
 
         Destroy(missionCube);
+        timerAddText.SetActive(false);
     }
 
     public void EndMission()

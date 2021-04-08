@@ -8,7 +8,7 @@ public class MissionController : MonoBehaviour
     public GameObject pixelPrefab;
     Vector2Int startPoint;
     public Vector2Int endPoint;
-
+    public int time = 30;
     PixelControllerScript endPointPixel;
     // Start is called before the first frame update
     void Start()

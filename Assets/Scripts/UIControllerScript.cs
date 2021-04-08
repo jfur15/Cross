@@ -34,12 +34,12 @@ public class UIControllerScript : MonoBehaviour
 
     }
 
-    public void HoverEnter(Vector2Int coords)
+    public void HoverEnter(Vector2Int coords, int time)
     {
         //show UI elemtns
         if (!takenMission)
         {
-            minimapController.ShowMission(coords);
+            minimapController.ShowMission(coords, time);
 
         }
     }
@@ -58,9 +58,10 @@ public class UIControllerScript : MonoBehaviour
         if (!takenMission)
         {
 
+            MissionController mcs = missionCube.GetComponent<MissionController>();
             minimapController.TakeMission(missionCube);
             takenMission = true;
-            timerController.AddTime(30);
+            timerController.AddTime(mcs.time);
         }
     }
 

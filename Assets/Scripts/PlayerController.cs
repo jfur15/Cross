@@ -126,7 +126,8 @@ public class PlayerController : MonoBehaviour
         }
         if (other.CompareTag("mission"))
         {
-            uiController.HoverEnter(other.gameObject.GetComponent<MissionController>().endPoint);
+            MissionController mcs = other.gameObject.GetComponent<MissionController>();
+            uiController.HoverEnter(mcs.endPoint, mcs.time);
             missionObject = other.gameObject;
         }
         if (other.CompareTag("missionend"))

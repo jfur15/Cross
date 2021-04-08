@@ -499,6 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d56379b6aa83b4ca4691985dff2625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 5
+  uiControllerObject: {fileID: 250057201}
 --- !u!114 &516066900
 MonoBehaviour:
   m_ObjectHideFlags: 0
