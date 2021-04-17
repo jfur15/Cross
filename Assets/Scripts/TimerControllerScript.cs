@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TimerControllerScript : MonoBehaviour
 {
-    public float timer = 5;
+    public float timer = 20;
     Text text;
     public GameObject uiControllerObject;
     UIControllerScript uiControllerScript;
@@ -19,7 +19,7 @@ public class TimerControllerScript : MonoBehaviour
     void Update()
     {
         timer -= 1 * Time.deltaTime;
-        text.text = ((int)timer).ToString();
+        text.text = "TIME\n" + ((int)timer).ToString();
 
         if (timer <= 1)
         {

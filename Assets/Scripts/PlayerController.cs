@@ -118,6 +118,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("platform"))
         {
             platCounter++;
+            
         }
 
         if (other.CompareTag("pit"))

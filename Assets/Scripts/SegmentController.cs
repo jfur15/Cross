@@ -92,11 +92,15 @@ public class SegmentController : MonoBehaviour
     public void SetCoordinates(Vector2 x)
     {
         coordinates = x;
+
+        //Create debug coordinates
+        /*
         GameObject xx = new GameObject();
         TextMesh tm = xx.AddComponent<TextMesh>();
         tm.text = coordinates.ToString();
         tm.transform.SetParent(gameObject.transform);
         tm.transform.position = gameObject.transform.position;
+        */
 
     }
     public Vector2 GetCoordinates()

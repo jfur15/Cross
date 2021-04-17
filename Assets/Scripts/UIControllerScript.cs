@@ -13,6 +13,7 @@ public class UIControllerScript : MonoBehaviour
 {
     public MinimapControllerScript minimapController;
     public TimerControllerScript timerController;
+    public ScoreControllerScript scoreController;
     bool takenMission = false;
     MissionState missionState;
 
@@ -67,7 +68,7 @@ public class UIControllerScript : MonoBehaviour
 
     public void TimeOut()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("MenuScene");
     }
 
     public void EndEnter()
@@ -75,6 +76,7 @@ public class UIControllerScript : MonoBehaviour
         HoverExit();
         takenMission = false;
         minimapController.EndMission();
+        scoreController.AddScore();
         //set timer
         //unshow elemtns
     }
