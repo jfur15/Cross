@@ -21,6 +21,9 @@ public class ScoreControllerScript : MonoBehaviour
 
     }
 
+    public int GetScore()
+    { return score; }
+
     public void AddOne()
     {
         score += 1;

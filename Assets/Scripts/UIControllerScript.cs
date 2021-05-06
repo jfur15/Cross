@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public enum MissionState
-{
-    NoMission,
-    PossibleMission,
-    OnMission
-}
 
 public class UIControllerScript : MonoBehaviour
 {
@@ -15,45 +9,39 @@ public class UIControllerScript : MonoBehaviour
     public TimerControllerScript timerController;
     public ScoreControllerScript scoreController;
     bool takenMission = false;
-    MissionState missionState;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        SetState(MissionState.NoMission);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    void SetState(MissionState newState)
-    {
 
     }
 
+    //Called when the player enters a cube
     public void HoverEnter(Vector2Int coords, int time)
     {
-        //show UI elemtns
         if (!takenMission)
         {
             minimapController.ShowMission(coords, time);
 
         }
     }
+
+    //Called when the player exits a cube
     public void HoverExit()
     {
         if (!takenMission)
         {
-
             minimapController.HideMission();
         }
-        //hide UI elemtns
     }
 
+
+    //Called when the player presses space within a cube
     public void StartMission(GameObject missionCube)
     {
         if (!takenMission)
@@ -66,11 +54,17 @@ public class UIControllerScript : MonoBehaviour
         }
     }
 
+    //Called when the TimerController runs out
     public void TimeOut()
     {
-        SceneManager.LoadScene("MenuScene");
+        if (scoreController.GetScore() > 0)
+        {
+            ScoreboardControllerScript.NewScore(scoreController.GetScore());
+        }
+        SceneManager.LoadScene("ScoreScene");
     }
 
+    //Called when the player runs into a mission end cube
     public void EndEnter()
     {
         HoverExit();
