@@ -110,3 +110,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundCollider: {fileID: 9144086804627616545, guid: 1f375ad49362b7f4dbae00fb6104dd28, type: 3}
   spawner: {fileID: 8891478141458994327, guid: ba478b138992b4841886036b66f8f9dc, type: 3}
+  cellType: 0

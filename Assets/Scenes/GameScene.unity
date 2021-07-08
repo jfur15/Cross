@@ -1621,6 +1621,10 @@ PrefabInstance:
       propertyPath: mapTexture
       value: 
       objectReference: {fileID: 2800000, guid: 5a637587e35260c4585e58defb05a2c3, type: 3}
+    - target: {fileID: 9060822331542075884, guid: 79d568497b965cb428d356eb006602c6, type: 3}
+      propertyPath: myMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 5bfc64a185474294fae5ea6b5b0b67f3, type: 2}
     - target: {fileID: 9060822331542075885, guid: 79d568497b965cb428d356eb006602c6, type: 3}
       propertyPath: m_Name
       value: MapController

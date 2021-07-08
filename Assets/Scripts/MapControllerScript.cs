@@ -16,6 +16,8 @@ public class MapControllerScript : MonoBehaviour
     public GameObject buildingObject;
     public GameObject safeObject;
 
+    public Material myMaterial;
+
     Cell[,] mapp;
     GameObject[,] mappO;
     public List<Vector2Int> blanks = new List<Vector2Int>();
@@ -117,8 +119,15 @@ public class MapControllerScript : MonoBehaviour
                     GameObject newSafe = Instantiate(safeObject);
                     newSafe.transform.localScale = new Vector3(cellSize, newSafe.transform.localScale.y, cellSize);
                     newSafe.transform.position = new Vector3(pos.x, newSafe.transform.position.y, pos.y);
+                    newSafe.transform.Rotate(transform.up, 90, Space.Self);
                     newSafe.GetComponent<SegmentController>().CreateSpawnerOnOff(true);
-                    newSafe.GetComponent<Renderer>().material.color = Color.blue;
+                    //newSafe.GetComponent<Renderer>().material.color = Color.blue; 
+                    //newSafe.GetComponent<Renderer>().material = myMaterial;
+                    //foreach(GameObject g in newSafe.transform.GetComponentsInChildren<GameObject>())
+                    {
+                        //g.transform.RotateAround
+                       // g.transform.Rotate(newSafe.transform.up, -90);
+                    }
                     newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                     mappO[x, y] = newSafe;
                     mappO[x, y].GetComponent<SegmentController>().cellType = mapp[x, y];
@@ -131,7 +140,7 @@ public class MapControllerScript : MonoBehaviour
                     newSafe.transform.localScale = new Vector3(cellSize, newSafe.transform.localScale.y, cellSize);
                     newSafe.transform.position = new Vector3(pos.x, newSafe.transform.position.y, pos.y);
                     newSafe.GetComponent<SegmentController>().CreateSpawnerOnOff(false);
-                    newSafe.GetComponent<Renderer>().material.color = Color.magenta;
+                    //newSafe.GetComponent<Renderer>().material.color = Color.magenta;
                     newSafe.GetComponent<SegmentController>().SetCoordinates(new Vector2(x, y));
                     mappO[x, y] = newSafe;
                     mappO[x, y].GetComponent<SegmentController>().cellType = mapp[x, y];
